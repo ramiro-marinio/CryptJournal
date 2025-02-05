@@ -1,5 +1,5 @@
-import 'package:cryptjournal/widgets/centered_text.dart';
-import 'package:cryptjournal/widgets/image_button.dart';
+import 'package:cryptjournal/pages/home_page/widgets/image_button.dart';
+import 'package:cryptjournal/pages/home_page/widgets/my_diaries.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,27 +13,28 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(),
       appBar: AppBar(
         title: Image.asset(
           'assets/CryptJournal.png',
           height: 70,
         ),
+        leading: DrawerButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: CenteredText(
-                'Welcome to CryptJournal.',
-                style: Theme.of(context).textTheme.headlineLarge,
+            Center(
+              child: ImageButton(
+                onPressed: () {},
+                imagePath: 'assets/images/writing.png',
+                label: 'Create New Entry',
+                width: 200,
+                aspectRatio: AspectRatio(aspectRatio: 2 / 3),
               ),
             ),
-            ImageButton(
-              onPressed: () {},
-              imagePath: 'assets/images/writing.png',
-            )
+            Expanded(child: MyDiaries()),
           ],
         ),
       ),
