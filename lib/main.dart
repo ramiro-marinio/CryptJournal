@@ -1,4 +1,4 @@
-import 'package:cryptjournal/pages/home_page.dart';
+import 'package:cryptjournal/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,8 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CryptJournal',
       theme: ThemeData(
+        splashFactory: NoSplash.splashFactory,
+        splashColor: Colors.white,
         brightness: Brightness.dark,
-        fontFamily: 'PTSerif',
+        fontFamily: 'LiberationSerif',
         appBarTheme: AppBarTheme(
           toolbarHeight: 100,
           backgroundColor: const Color.fromARGB(255, 31, 31, 31),

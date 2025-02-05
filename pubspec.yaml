@@ -60,9 +60,9 @@ flutter:
     - assets/images/writing.png
 
   fonts:
-    - family: PTSerif
+    - family: LiberationSerif
       fonts:
-        - asset: assets/fonts/PTSerif.ttf
+        - asset: assets/fonts/LiberationSerif.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

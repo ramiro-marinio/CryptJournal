@@ -1,4 +1,5 @@
 import 'package:cryptjournal/widgets/centered_text.dart';
+import 'package:cryptjournal/widgets/image_button.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,7 +30,10 @@ class _HomePageState extends State<HomePage> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
-            Image.asset('assets/images/writing.png')
+            ImageButton(
+              onPressed: () {},
+              imagePath: 'assets/images/writing.png',
+            )
           ],
         ),
       ),
