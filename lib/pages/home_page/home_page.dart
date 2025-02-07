@@ -12,30 +12,34 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(),
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/CryptJournal.png',
-          height: 70,
+    return PopScope(
+      child: Scaffold(
+        drawer: Drawer(),
+        appBar: AppBar(
+          title: Image.asset(
+            'assets/CryptJournal.png',
+            height: 70,
+          ),
+          leading: DrawerButton(),
         ),
-        leading: DrawerButton(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Center(
-              child: ImageButton(
-                onPressed: () {},
-                imagePath: 'assets/images/writing.png',
-                label: 'Create New Entry',
-                width: 200,
-                aspectRatio: AspectRatio(aspectRatio: 2 / 3),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Center(
+                child: ImageButton(
+                  onPressed: () {},
+                  imagePath: 'assets/images/writing.png',
+                  label: 'Create New Entry',
+                  width: 200,
+                  aspectRatio: AspectRatio(aspectRatio: 2 / 3),
+                ),
               ),
-            ),
-            Expanded(child: MyDiaries()),
-          ],
+              Expanded(
+                child: MyDiaries(),
+              ),
+            ],
+          ),
         ),
       ),
     );

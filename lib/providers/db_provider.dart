@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DbProvider extends ChangeNotifier {
   Database? _database;
@@ -25,15 +26,16 @@ class DbProvider extends ChangeNotifier {
   }
 
   Future<Database> _initDB() async {
-    String path = join(await getDatabasesPath(), 'my_database.db');
+    final databasePath = 'data/data/com.ramiromarino.cryptjournal/databases';
+    String path = join(databasePath, 'my_database.db');
     return await openDatabase(
       path,
       version: 1,
-      onCreate: _onCreate,
+      onCreate: _onCreateDatabase,
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _onCreateDatabase(Database db, int version) async {
     String createTableQueries = await rootBundle.loadString('sql/setup.sql');
     List<String> queries = createTableQueries.split(';');
     for (String query in queries) {
