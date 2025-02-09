@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class DbProvider extends ChangeNotifier {
   Database? _database;
 
   Table? _diaryTable;
   Table get diaryTable {
-    _diaryTable ??= Table(tableName: 'diary', db: database);
+    _diaryTable ??= Table(
+      tableName: 'diary',
+      db: database,
+      notifyListeners: notifyListeners,
+    );
     return _diaryTable!;
   }
 
   Table? _entryTable;
   Table get entryTable {
-    _entryTable ??= Table(tableName: 'entry', db: database);
+    _entryTable ??= Table(
+      tableName: 'entry',
+      db: database,
+      notifyListeners: notifyListeners,
+    );
     return _entryTable!;
   }
 
@@ -49,19 +56,16 @@ class DbProvider extends ChangeNotifier {
 class Table {
   final String tableName;
   late Future<Database> db;
-  Table({
-    required this.tableName,
-    required this.db,
-  });
+  final VoidCallback notifyListeners;
+  Table(
+      {required this.tableName,
+      required this.db,
+      required this.notifyListeners});
   Future<List<Map<String, dynamic>>> list(
       {String? where, String? orderBy, int? limit, int? offset}) async {
     final Database database = await db;
     final data = await database.query(
       tableName,
-      where: where,
-      orderBy: orderBy,
-      limit: limit,
-      offset: offset,
     );
     return data;
   }
@@ -69,7 +73,7 @@ class Table {
   Future<bool> create({
     required Map<String, dynamic> object,
   }) async {
-    (await db).insert(tableName, object);
+    notifyListeners();
     return true;
   }
 
@@ -77,6 +81,7 @@ class Table {
     String? where,
   }) async {
     (await db).delete(tableName, where: where);
+    notifyListeners();
     return true;
   }
 
@@ -85,6 +90,7 @@ class Table {
     String? where,
   }) async {
     (await db).update(tableName, object, where: where);
+    notifyListeners();
     return true;
   }
 }
