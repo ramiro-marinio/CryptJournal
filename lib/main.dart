@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           fontFamily: 'LiberationSerif',
           appBarTheme: AppBarTheme(
+            toolbarTextStyle: TextStyle(
+              fontFamily: 'LiberationSerif',
+            ),
             toolbarHeight: 100,
             backgroundColor: const Color.fromARGB(255, 31, 31, 31),
             titleTextStyle: TextStyle(
@@ -45,6 +48,14 @@ class MyApp extends StatelessWidget {
             headlineSmall: TextStyle(fontSize: 20),
             bodyMedium: TextStyle(fontSize: 12.0),
             bodySmall: TextStyle(fontSize: 10.0),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(0),
+              ),
+            ),
+            contentPadding: EdgeInsets.all(8),
           ),
         ),
         home: HomePage(),

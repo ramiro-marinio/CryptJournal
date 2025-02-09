@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:cryptjournal/pages/home_page/widgets/diaries/create_diary.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MyDiaries extends StatefulWidget {
@@ -18,9 +20,27 @@ class _MyDiariesState extends State<MyDiaries> {
       padding: const EdgeInsets.all(8.0),
       child: ListView(
         children: [
-          Text(
-            'My Diaries',
-            style: Theme.of(context).textTheme.headlineSmall,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'My Diaries',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreateDiary(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  PhosphorIcons.plus(),
+                ),
+              )
+            ],
           ),
           FutureBuilder(
             future: dbProvider.entryTable.list(),

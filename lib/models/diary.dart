@@ -1,12 +1,12 @@
 class Diary {
-  int id;
+  int? id;
   String name;
   String? description;
   DateTime createdAt;
   DateTime updatedAt;
 
   Diary({
-    required this.id,
+    this.id,
     required this.name,
     this.description,
     required this.createdAt,
@@ -25,7 +25,7 @@ class Diary {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'name': name,
       'description': description,
       'created_at': createdAt.toIso8601String(),

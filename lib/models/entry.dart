@@ -1,5 +1,5 @@
 class Entry {
-  final int id;
+  final int? id;
   final int diaryId;
   final String title;
   final String body;
@@ -7,7 +7,7 @@ class Entry {
   final DateTime updatedAt;
 
   Entry({
-    required this.id,
+    this.id,
     required this.diaryId,
     required this.title,
     required this.body,
@@ -28,7 +28,7 @@ class Entry {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'diary_id': diaryId,
       'title': title,
       'body': body,

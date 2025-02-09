@@ -1,5 +1,5 @@
 import 'package:cryptjournal/pages/home_page/widgets/image_button.dart';
-import 'package:cryptjournal/pages/home_page/widgets/my_diaries.dart';
+import 'package:cryptjournal/pages/home_page/widgets/diaries/my_diaries.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
