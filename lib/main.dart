@@ -1,6 +1,7 @@
 import 'package:cryptjournal/pages/home_page/home_page.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,6 +23,11 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.white,
           brightness: Brightness.dark,
           fontFamily: 'LiberationSerif',
+          actionIconTheme: ActionIconThemeData(
+            backButtonIconBuilder: (BuildContext context) => Icon(
+              PhosphorIcons.caretLeft(),
+            ),
+          ),
           appBarTheme: AppBarTheme(
             toolbarTextStyle: TextStyle(
               fontFamily: 'LiberationSerif',

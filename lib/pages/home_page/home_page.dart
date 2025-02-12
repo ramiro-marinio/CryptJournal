@@ -14,13 +14,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return PopScope(
       child: Scaffold(
-        drawer: Drawer(),
         appBar: AppBar(
           title: Image.asset(
             'assets/CryptJournal.png',
             height: 70,
           ),
-          leading: DrawerButton(),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
