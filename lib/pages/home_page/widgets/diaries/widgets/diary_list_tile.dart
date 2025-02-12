@@ -1,4 +1,5 @@
 import 'package:cryptjournal/models/diary.dart';
+import 'package:cryptjournal/pages/home_page/widgets/diaries/view_diary/view_diary.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -12,7 +13,13 @@ class DiaryListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return ViewDiary(diary: diary);
+          },
+        ));
+      },
       leading: Icon(PhosphorIcons.book()),
       title: Text(diary.name),
       trailing: DropdownButton(
