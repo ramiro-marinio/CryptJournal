@@ -34,6 +34,7 @@ class DbProvider extends ChangeNotifier {
 
   Future<Database> _initDB() async {
     final databasePath = 'data/data/com.ramiromarino.cryptjournal/databases';
+    await deleteDatabase(join(databasePath, 'my_database.db'));
     String path = join(databasePath, 'my_database.db');
     return await openDatabase(
       path,
@@ -73,6 +74,7 @@ class Table {
   Future<bool> create({
     required Map<String, dynamic> object,
   }) async {
+    (await db).insert(tableName, object);
     notifyListeners();
     return true;
   }
