@@ -4,20 +4,30 @@ import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateEntry extends StatefulWidget {
+class ModifyEntry extends StatefulWidget {
   final Diary diary;
-  const CreateEntry({
+  final Entry? entry;
+  const ModifyEntry({
     super.key,
     required this.diary,
+    this.entry,
   });
 
   @override
-  State<CreateEntry> createState() => _CreateEntryState();
+  State<ModifyEntry> createState() => _ModifyEntryState();
 }
 
-class _CreateEntryState extends State<CreateEntry> {
+class _ModifyEntryState extends State<ModifyEntry> {
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.entry?.title ?? '';
+    bodyController.text = widget.entry?.body ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     final DbProvider dbProvider = context.read<DbProvider>();
@@ -25,7 +35,7 @@ class _CreateEntryState extends State<CreateEntry> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'New entry on \'${widget.diary.name}\'',
+          '${widget.entry == null ? 'New entry' : 'Edit \'${widget.entry!.title}\''} on \'${widget.diary.name}\'',
         ),
       ),
       body: SizedBox(
@@ -68,11 +78,20 @@ class _CreateEntryState extends State<CreateEntry> {
                           diaryId: widget.diary.id!,
                           title: titleController.text,
                           body: bodyController.text,
-                          createdAt: DateTime.now(),
+                          createdAt: widget.entry == null
+                              ? DateTime.now()
+                              : widget.entry!.createdAt,
                           updatedAt: DateTime.now(),
                         );
-                        await dbProvider.entryTable
-                            .create(object: result.toJson());
+                        if (widget.entry == null) {
+                          await dbProvider.entryTable
+                              .create(object: result.toJson());
+                        } else {
+                          await dbProvider.entryTable.update(
+                            object: result.toJson(),
+                            where: 'id=${widget.entry!.id!}',
+                          );
+                        }
                         if (context.mounted) {
                           Navigator.pop(context);
                         }

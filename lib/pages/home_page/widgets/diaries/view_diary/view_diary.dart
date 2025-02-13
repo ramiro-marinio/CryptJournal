@@ -47,6 +47,7 @@ class _ViewDiaryState extends State<ViewDiary> {
                 .map(
                   (entry) => EntryListTile(
                     entry: entry,
+                    diary: widget.diary,
                   ),
                 )
                 .toList(),
@@ -57,7 +58,7 @@ class _ViewDiaryState extends State<ViewDiary> {
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
-                return CreateEntry(diary: widget.diary);
+                return ModifyEntry(diary: widget.diary);
               },
             ));
           },
