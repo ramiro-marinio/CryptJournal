@@ -24,8 +24,9 @@ class _ViewDiaryState extends State<ViewDiary> {
   Widget build(BuildContext context) {
     final DbProvider dbProvider = context.watch<DbProvider>();
     getEntries = dbProvider.entryTable.list(
-        where:
-            'diary_id=${widget.diary.id!}'); //This will be redefined after every reload. This is INTENTIONAL.
+      where:
+          'diary_id=${widget.diary.id!}', //This will be redefined after every reload. This is INTENTIONAL.
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.diary.name),

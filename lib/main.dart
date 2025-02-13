@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
             headlineLarge: TextStyle(fontSize: 28.0),
             headlineMedium: TextStyle(fontSize: 24.0),
             headlineSmall: TextStyle(fontSize: 20),
-            bodyMedium: TextStyle(fontSize: 12.0),
-            bodySmall: TextStyle(fontSize: 10.0),
+            bodyMedium: TextStyle(fontSize: 16.0),
+            bodySmall: TextStyle(fontSize: 12.0),
           ),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(
