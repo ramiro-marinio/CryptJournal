@@ -3,22 +3,36 @@ import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateDiary extends StatefulWidget {
-  const CreateDiary({super.key});
+class ModifyDiary extends StatefulWidget {
+  final Diary? diary;
+  const ModifyDiary({
+    super.key,
+    this.diary,
+  });
 
   @override
-  State<CreateDiary> createState() => _CreateDiaryState();
+  State<ModifyDiary> createState() => _ModifyDiaryState();
 }
 
-class _CreateDiaryState extends State<CreateDiary> {
+class _ModifyDiaryState extends State<ModifyDiary> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.diary?.name ?? '';
+    descriptionController.text = widget.diary?.description ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     final DbProvider dbProvider = context.read<DbProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Diary'),
+        title: Text(widget.diary == null
+            ? 'New Diary'
+            : 'Edit Diary \'${widget.diary!.name}\''),
       ),
       body: Column(
         children: [
@@ -56,14 +70,22 @@ class _CreateDiaryState extends State<CreateDiary> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await dbProvider.diaryTable.create(
-                        object: Diary(
-                          id: null,
-                          name: nameController.text,
-                          createdAt: DateTime.now(),
-                          updatedAt: DateTime.now(),
-                        ).toJson(),
-                      );
+                      final result = Diary(
+                        id: null,
+                        name: nameController.text,
+                        createdAt: widget.diary == null
+                            ? DateTime.now()
+                            : widget.diary!.createdAt,
+                        updatedAt: DateTime.now(),
+                      ).toJson();
+                      if (widget.diary == null) {
+                        await dbProvider.diaryTable.create(object: result);
+                      } else {
+                        await dbProvider.diaryTable.update(
+                          object: result,
+                          where: 'id=${widget.diary!.id!}',
+                        );
+                      }
                       if (context.mounted) Navigator.pop(context);
                     },
                     child: Text('Create'),

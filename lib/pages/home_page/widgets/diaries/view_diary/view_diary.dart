@@ -1,6 +1,6 @@
 import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/models/entry.dart';
-import 'package:cryptjournal/pages/home_page/widgets/diaries/create_entry/create_entry.dart';
+import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_entry/modify_entry.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/view_diary/widgets/entry_list_tile.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';

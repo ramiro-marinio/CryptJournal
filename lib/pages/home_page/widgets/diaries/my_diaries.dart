@@ -1,5 +1,5 @@
 import 'package:cryptjournal/models/diary.dart';
-import 'package:cryptjournal/pages/home_page/widgets/diaries/create_diary.dart';
+import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_diary/modify_diary.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/widgets/diary_list_tile.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class _MyDiariesState extends State<MyDiaries> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CreateDiary(),
+                      builder: (context) => const ModifyDiary(),
                     ),
                   );
                 },
