@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Image.asset(
-            'assets/CryptJournal.png',
+            'assets/logo/CryptJournal.png',
             height: 70,
           ),
         ),
