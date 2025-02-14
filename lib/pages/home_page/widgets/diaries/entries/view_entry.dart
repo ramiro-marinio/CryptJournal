@@ -1,5 +1,6 @@
 import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/models/entry.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_entry/modify_entry.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:cryptjournal/utils/functions/format_date.dart';

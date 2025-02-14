@@ -1,3 +1,5 @@
+import 'package:cryptjournal/constants/bg_decoration.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/image_button.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/my_diaries.dart';
 import 'package:flutter/material.dart';
@@ -20,23 +22,16 @@ class _HomePageState extends State<HomePage> {
             height: 70,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Center(
-                child: ImageButton(
-                  onPressed: () {},
-                  imagePath: 'assets/images/writing.png',
-                  label: 'Create New Entry',
-                  width: 200,
-                  aspectRatio: AspectRatio(aspectRatio: 2 / 3),
+        body: GradientBackground(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: MyDiaries(),
                 ),
-              ),
-              Expanded(
-                child: MyDiaries(),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

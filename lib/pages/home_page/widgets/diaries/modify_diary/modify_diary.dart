@@ -1,4 +1,7 @@
 import 'package:cryptjournal/models/diary.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/glass_morphism.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/standard_button.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,41 +37,45 @@ class _ModifyDiaryState extends State<ModifyDiary> {
             ? 'New Diary'
             : 'Edit Diary \'${widget.diary!.name}\''),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Form(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        decoration: InputDecoration(hintText: 'Name'),
-                        controller: nameController,
+      body: GradientBackground(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Form(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(hintText: 'Name'),
+                          controller: nameController,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        decoration: InputDecoration(hintText: 'Description'),
-                        controller: descriptionController,
-                        maxLines: 6,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(hintText: 'Description'),
+                          controller: descriptionController,
+                          maxLines: 6,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 150,
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
+            SizedBox(
+              height: 150,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: StandardButton(
+                    child: Text(
+                      widget.diary == null
+                          ? 'Create Diary'
+                          : 'Edit \'${widget.diary!.name}\'',
+                    ),
                     onPressed: () async {
                       final result = Diary(
                         id: null,
@@ -88,13 +95,12 @@ class _ModifyDiaryState extends State<ModifyDiary> {
                       }
                       if (context.mounted) Navigator.pop(context);
                     },
-                    child: Text('Create'),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

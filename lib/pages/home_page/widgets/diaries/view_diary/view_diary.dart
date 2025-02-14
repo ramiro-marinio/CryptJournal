@@ -1,5 +1,8 @@
+import 'package:cryptjournal/constants/standard_radius.dart';
 import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/models/entry.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/glass_morphism.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_entry/modify_entry.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/view_diary/widgets/entry_list_tile.dart';
 import 'package:cryptjournal/providers/db_provider.dart';
@@ -31,40 +34,49 @@ class _ViewDiaryState extends State<ViewDiary> {
       appBar: AppBar(
         title: Text(widget.diary.name),
       ),
-      body: FutureBuilder(
-        future: getEntries!,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator.adaptive(),
+      body: GradientBackground(
+        child: FutureBuilder(
+          future: getEntries!,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+            final entries = snapshot.data!.map((entry) {
+              return Entry.fromJson(entry);
+            });
+            return ListView(
+              children: entries
+                  .map(
+                    (entry) => EntryListTile(
+                      entry: entry,
+                      diary: widget.diary,
+                    ),
+                  )
+                  .toList(),
             );
-          }
-          final entries = snapshot.data!.map((entry) {
-            return Entry.fromJson(entry);
-          });
-          return ListView(
-            children: entries
-                .map(
-                  (entry) => EntryListTile(
-                    entry: entry,
-                    diary: widget.diary,
-                  ),
-                )
-                .toList(),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) {
-                return ModifyEntry(diary: widget.diary);
-              },
-            ));
           },
-          child: Icon(
-            PhosphorIcons.pen(),
-          )),
+        ),
+      ),
+      floatingActionButton: GlassMorphism(
+        child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: standardRadius,
+            ),
+            elevation: 0,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return ModifyEntry(diary: widget.diary);
+                },
+              ));
+            },
+            child: Icon(
+              PhosphorIcons.pen(),
+            )),
+      ),
     );
   }
 }
