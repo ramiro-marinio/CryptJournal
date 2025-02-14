@@ -67,6 +67,10 @@ class Table {
     final Database database = await db;
     final data = await database.query(
       tableName,
+      where: where,
+      limit: limit,
+      offset: offset,
+      orderBy: orderBy,
     );
     return data;
   }

@@ -7,62 +7,104 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ViewEntry extends StatelessWidget {
-  final Entry entry;
+class ViewEntry extends StatefulWidget {
+  final Entry providedEntry;
   final Diary diary;
   const ViewEntry({
     super.key,
-    required this.entry,
+    required this.providedEntry,
     required this.diary,
   });
 
   @override
+  State<ViewEntry> createState() => _ViewEntryState();
+}
+
+class _ViewEntryState extends State<ViewEntry> {
+  Entry? newEntry;
+
+  @override
   Widget build(BuildContext context) {
+    final DbProvider dbProvider = context.watch<DbProvider>();
+    final Future<Entry> updateEntry = (() async {
+      final entries = await dbProvider.entryTable.list(
+        where: 'id=${widget.providedEntry.id!}',
+      );
+      return Entry.fromJson(entries[0]);
+    })()
+      ..then((e) {
+        newEntry = null;
+        setState(() {});
+        newEntry = e;
+        setState(() {});
+      });
     return Scaffold(
       appBar: AppBar(
-        title: Text('View \'${entry.title}\''),
+        title: newEntry != null
+            ? Text('View \'${newEntry!.title}\'')
+            : Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
         actions: [
-          IconButton(
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ModifyEntry(
-                      diary: diary,
-                      entry: entry,
-                    );
-                  },
-                ),
-              );
-            },
-            icon: Icon(
-              PhosphorIcons.pen(),
-            ),
-          )
+          Builder(builder: (context) {
+            if (newEntry == null) {
+              return CircularProgressIndicator.adaptive();
+            }
+            return IconButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ModifyEntry(
+                        diary: widget.diary,
+                        entry: newEntry!,
+                      );
+                    },
+                  ),
+                );
+              },
+              icon: Icon(
+                PhosphorIcons.pen(),
+              ),
+            );
+          })
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Created ${formatDate(entry.createdAt)}\nLast Updated ${formatDate(entry.updatedAt)}',
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.headlineSmall?.fontSize,
-                  fontWeight: FontWeight.w800,
+      body: FutureBuilder(
+          future: updateEntry,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Created ${formatDate(snapshot.data!.createdAt)}\nLast Updated ${formatDate(snapshot.data!.updatedAt)}',
+                        style: TextStyle(
+                          fontSize: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.fontSize,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Divider(),
+                      Text(
+                        snapshot.data!.body,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Divider(),
-              Text(
-                entry.body,
-              )
-            ],
-          ),
-        ),
-      ),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+          }),
     );
   }
 }

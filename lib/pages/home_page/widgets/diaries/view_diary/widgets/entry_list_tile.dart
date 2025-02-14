@@ -20,7 +20,7 @@ class EntryListTile extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             return ViewEntry(
-              entry: entry,
+              providedEntry: entry,
               diary: diary,
             );
           },
