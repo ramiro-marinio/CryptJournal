@@ -1,7 +1,8 @@
 import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/models/entry.dart';
+import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_entry/modify_entry.dart';
-import 'package:cryptjournal/providers/db_provider.dart';
+import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:cryptjournal/utils/functions/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -25,7 +26,8 @@ class _ViewEntryState extends State<ViewEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final DbProvider dbProvider = context.watch<DbProvider>();
+    final FunctionalityProvider dbProvider =
+        context.watch<FunctionalityProvider>();
     final Future<Entry> updateEntry = (() async {
       final entries = await dbProvider.entryTable.list(
         where: 'id=${widget.providedEntry.id!}',
@@ -71,12 +73,12 @@ class _ViewEntryState extends State<ViewEntry> {
           })
         ],
       ),
-      body: FutureBuilder(
-          future: updateEntry,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Padding(
+      body: GradientBackground(
+        child: FutureBuilder(
+            future: updateEntry,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,19 +94,25 @@ class _ViewEntryState extends State<ViewEntry> {
                         ),
                       ),
                       Divider(),
-                      Text(
-                        snapshot.data!.body,
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            Text(
+                              snapshot.data!.body,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
-                ),
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-          }),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+            }),
+      ),
     );
   }
 }

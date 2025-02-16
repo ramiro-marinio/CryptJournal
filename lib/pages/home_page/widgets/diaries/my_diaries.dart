@@ -1,7 +1,7 @@
 import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_diary/modify_diary.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/widgets/diary_list_tile.dart';
-import 'package:cryptjournal/providers/db_provider.dart';
+import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,8 @@ class MyDiaries extends StatefulWidget {
 class _MyDiariesState extends State<MyDiaries> {
   @override
   Widget build(BuildContext context) {
-    final DbProvider dbProvider = context.watch<DbProvider>();
+    final FunctionalityProvider dbProvider =
+        context.watch<FunctionalityProvider>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(

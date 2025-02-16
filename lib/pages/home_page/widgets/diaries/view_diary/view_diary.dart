@@ -5,7 +5,7 @@ import 'package:cryptjournal/pages/home_page/widgets/decoration/glass_morphism.d
 import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_entry/modify_entry.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/view_diary/widgets/entry_list_tile.dart';
-import 'package:cryptjournal/providers/db_provider.dart';
+import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +25,8 @@ class _ViewDiaryState extends State<ViewDiary> {
   Future<List<Map<String, dynamic>>>? getEntries;
   @override
   Widget build(BuildContext context) {
-    final DbProvider dbProvider = context.watch<DbProvider>();
+    final FunctionalityProvider dbProvider =
+        context.watch<FunctionalityProvider>();
     getEntries = dbProvider.entryTable.list(
       where:
           'diary_id=${widget.diary.id!}', //This will be redefined after every reload. This is INTENTIONAL.

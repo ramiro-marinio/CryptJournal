@@ -1,7 +1,7 @@
 import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/standard_button.dart';
-import 'package:cryptjournal/providers/db_provider.dart';
+import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +29,8 @@ class _ModifyDiaryState extends State<ModifyDiary> {
 
   @override
   Widget build(BuildContext context) {
-    final DbProvider dbProvider = context.read<DbProvider>();
+    final FunctionalityProvider dbProvider =
+        context.read<FunctionalityProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.diary == null
@@ -65,7 +66,7 @@ class _ModifyDiaryState extends State<ModifyDiary> {
               ),
             ),
             SizedBox(
-              height: 150,
+              height: 200,
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.all(8),
