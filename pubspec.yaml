@@ -63,7 +63,6 @@ flutter:
     - assets/
     - assets/images/Background.png
     - assets/logo/CryptJournal.png
-    - assets/images/writing.png
 
   fonts:
     - family: LiberationSerif
