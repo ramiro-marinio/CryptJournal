@@ -1,5 +1,4 @@
 import 'package:cryptjournal/models/diary.dart';
-import 'package:cryptjournal/pages/home_page/widgets/decoration/glass_morphism.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/standard_button.dart';
 import 'package:cryptjournal/providers/db_provider.dart';

@@ -1,7 +1,4 @@
-import 'package:cryptjournal/models/diary.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/glass_morphism.dart';
-import 'package:cryptjournal/pages/home_page/widgets/diaries/modify_diary/modify_diary.dart';
-import 'package:cryptjournal/providers/db_provider.dart';
 import 'package:flutter/material.dart';
 
 class StandardButton extends StatelessWidget {
