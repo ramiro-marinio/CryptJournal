@@ -2,19 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'dart:io' as io;
+import 'dart:io';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class FunctionalityProvider extends ChangeNotifier {
   late Future<bool> _initialized;
-  late String databasePath;
+  late final String databasePath;
   final databaseName = 'database.db';
-  final encryptedDatabaseName = '/encrypted_database.aes';
-  late final encryptedDirPath;
+  final encryptedDatabaseName = '/database.aes';
+  late final String encryptedDirPath;
+
+  /// 0 = Database never created.
+  /// 1 = Database created. Not authenticated.
+  /// 2 = Database created. Authenticated.
+  int authStatus = 0;
+  void changeAuthStatus(int newVal) {
+    authStatus = newVal;
+    notifyListeners();
+  }
 
   Future<bool> _init() async {
     databasePath = await getDatabasesPath();
     encryptedDirPath = '$databasePath/encrypted';
+    await Directory(encryptedDirPath).create();
+
+    authStatus = (await checkDatabaseExists()) ? 1 : 0;
+
     return true;
   }
 
@@ -22,9 +35,6 @@ class FunctionalityProvider extends ChangeNotifier {
     _init();
   }
 
-  /// pene
-  int authStatus =
-      2; //TODO: Change to 1 for production mode. This useful to force the user to authenticate.
   Database? _database;
 
   Table? _diaryTable;
@@ -53,17 +63,25 @@ class FunctionalityProvider extends ChangeNotifier {
     return _database!;
   }
 
-  Future<Database> _initDB() async {
-    final encryptedDir = await io.Directory(encryptedDirPath)
-        .create(); //will create the directory if it does not exist.
-    // final encryptedDB = encryptedDir.listSync().firstOrNull;
-    // await deleteDatabase(join(databasePath, 'my_database.db'));
+  Future<Database?> _initDB() async {
     String path = join(databasePath, databaseName);
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreateDatabase,
-    );
+    final encryptedDatabaseFilePath =
+        '$encryptedDirPath/$encryptedDatabaseName';
+    final encryptedDatabaseFile = File(encryptedDatabaseFilePath);
+
+    if (!(await encryptedDatabaseFile.exists())) {
+      return await openDatabase(
+        path,
+        version: 1,
+        onCreate: _onCreateDatabase,
+      );
+    }
+    return null;
+  }
+
+  Future<bool> checkDatabaseExists() async {
+    return (await File('$encryptedDirPath/$encryptedDatabaseName').exists()) ||
+        (await File('$databasePath/$databaseName').exists());
   }
 
   Future<void> _onCreateDatabase(Database db, int version) async {
@@ -77,33 +95,29 @@ class FunctionalityProvider extends ChangeNotifier {
   }
 
   Future<bool> encryptDatabase(encrypt.Key password) async {
-    final databasePath = await getDatabasesPath();
-    final encryptedDir = await io.Directory(encryptedDirPath).create();
-    final encryptedDatabaseFilePath = '$encryptedDir/$encryptedDatabaseName';
-    final encryptedDatabaseFile = io.File(encryptedDatabaseFilePath);
-
     final encrypter = encrypt.Encrypter(
       encrypt.AES(
         password,
       ),
     );
     final databaseBytes =
-        (await io.File('${databasePath}/${databaseName}').readAsBytes())
-            .toList();
+        (await File('$databasePath/$databaseName').readAsBytes()).toList();
     final encryptedResult =
         encrypter.encryptBytes(databaseBytes).bytes.toList();
-    io.File(
-      '${encryptedDirPath}/${encryptedDatabaseName}',
+
+    await File(
+      '$encryptedDirPath/$encryptedDatabaseName',
     ).writeAsBytes(encryptedResult);
+    await deleteDatabase('$databasePath/$databaseName');
+
     return true;
   }
 
   Future<bool> decryptDatabase(encrypt.Key password) async {
-    final databasePath = await getDatabasesPath();
-
-    final bytes = (await io.File(
-      '${encryptedDirPath}/${encryptedDatabaseName}',
-    ).readAsBytes());
+    final encryptedDatabaseFile = File(
+      '$encryptedDirPath/$encryptedDatabaseName',
+    );
+    final bytes = (await encryptedDatabaseFile.readAsBytes());
 
     final decrypter = encrypt.Encrypter(
       encrypt.AES(
@@ -113,8 +127,8 @@ class FunctionalityProvider extends ChangeNotifier {
     final decrypted_database = decrypter.decryptBytes(
       encrypt.Encrypted(bytes),
     );
-    await io.File('$databasePath/$databaseName')
-        .writeAsBytes(decrypted_database);
+    await encryptedDatabaseFile.delete();
+    await File('$databasePath/$databaseName').writeAsBytes(decrypted_database);
     return true;
   }
 }

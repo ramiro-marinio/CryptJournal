@@ -25,9 +25,9 @@ class _ViewDiaryState extends State<ViewDiary> {
   Future<List<Map<String, dynamic>>>? getEntries;
   @override
   Widget build(BuildContext context) {
-    final FunctionalityProvider dbProvider =
+    final FunctionalityProvider functionalityProvider =
         context.watch<FunctionalityProvider>();
-    getEntries = dbProvider.entryTable.list(
+    getEntries = functionalityProvider.entryTable.list(
       where:
           'diary_id=${widget.diary.id!}', //This will be redefined after every reload. This is INTENTIONAL.
     );

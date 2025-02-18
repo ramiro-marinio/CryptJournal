@@ -16,7 +16,7 @@ class MyDiaries extends StatefulWidget {
 class _MyDiariesState extends State<MyDiaries> {
   @override
   Widget build(BuildContext context) {
-    final FunctionalityProvider dbProvider =
+    final FunctionalityProvider functionalityProvider =
         context.watch<FunctionalityProvider>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -45,7 +45,7 @@ class _MyDiariesState extends State<MyDiaries> {
             ],
           ),
           FutureBuilder(
-            future: dbProvider.diaryTable.list(),
+            future: functionalityProvider.diaryTable.list(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Column(

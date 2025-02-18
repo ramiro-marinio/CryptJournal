@@ -32,7 +32,7 @@ class _ModifyEntryState extends State<ModifyEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final FunctionalityProvider dbProvider =
+    final FunctionalityProvider functionalityProvider =
         context.read<FunctionalityProvider>();
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -88,10 +88,10 @@ class _ModifyEntryState extends State<ModifyEntry> {
                             updatedAt: DateTime.now(),
                           );
                           if (widget.entry == null) {
-                            await dbProvider.entryTable
+                            await functionalityProvider.entryTable
                                 .create(object: result.toJson());
                           } else {
-                            await dbProvider.entryTable.update(
+                            await functionalityProvider.entryTable.update(
                               object: result.toJson(),
                               where: 'id=${widget.entry!.id!}',
                             );

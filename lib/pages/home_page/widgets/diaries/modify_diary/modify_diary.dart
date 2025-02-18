@@ -29,7 +29,7 @@ class _ModifyDiaryState extends State<ModifyDiary> {
 
   @override
   Widget build(BuildContext context) {
-    final FunctionalityProvider dbProvider =
+    final FunctionalityProvider functionalityProvider =
         context.read<FunctionalityProvider>();
     return Scaffold(
       appBar: AppBar(
@@ -86,9 +86,10 @@ class _ModifyDiaryState extends State<ModifyDiary> {
                         updatedAt: DateTime.now(),
                       ).toJson();
                       if (widget.diary == null) {
-                        await dbProvider.diaryTable.create(object: result);
+                        await functionalityProvider.diaryTable
+                            .create(object: result);
                       } else {
-                        await dbProvider.diaryTable.update(
+                        await functionalityProvider.diaryTable.update(
                           object: result,
                           where: 'id=${widget.diary!.id!}',
                         );

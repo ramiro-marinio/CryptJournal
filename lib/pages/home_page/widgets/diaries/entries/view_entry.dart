@@ -26,10 +26,10 @@ class _ViewEntryState extends State<ViewEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final FunctionalityProvider dbProvider =
+    final FunctionalityProvider functionalityProvider =
         context.watch<FunctionalityProvider>();
     final Future<Entry> updateEntry = (() async {
-      final entries = await dbProvider.entryTable.list(
+      final entries = await functionalityProvider.entryTable.list(
         where: 'id=${widget.providedEntry.id!}',
       );
       return Entry.fromJson(entries[0]);

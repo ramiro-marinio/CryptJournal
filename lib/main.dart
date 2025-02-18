@@ -1,10 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:cryptjournal/pages/auth/insert_password.dart';
 import 'package:cryptjournal/pages/home_page/home_page.dart';
 import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:encrypt/encrypt.dart' as encrypt;
 void main() {
   runApp(const AppWithChangeNotifierProvider());
 }
@@ -33,8 +35,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  int authStatus = 2; // 0 = No auth; 1 = Auth window opened; 2 = Authenticated
-  late DbProvider dbProvider;
+  late FunctionalityProvider functionalityProvider;
   @override
   void initState() {
     super.initState();
@@ -55,30 +56,22 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       AppLifecycleState.detached
     ].contains(state)) {
       print("App paused");
-      if (AppLifecycleState.detached != state && authStatus == 2) {
-        authStatus = 0;
+      if (AppLifecycleState.detached != state &&
+          functionalityProvider.authStatus == 2) {
+        functionalityProvider.changeAuthStatus(0);
       }
       if (state == AppLifecycleState.detached) {
-        
+        functionalityProvider.encryptDatabase(encrypt.Key(Uint8List.fromList([123,],),),); //TODO
       }
     } else if (state == AppLifecycleState.resumed) {
-      print("App resumed");
-      if (authStatus == 0) {
-        navigatorKey.currentState?.pushReplacement(
-          MaterialPageRoute(
-            builder: (context) {
-              return InsertPassword();
-            },
-          ),
-        );
-        authStatus = 1;
+        print("App resumed");
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final FunctionalityProvider dbProvider =
+    final FunctionalityProvider functionalityProvider =
         context.watch<FunctionalityProvider>();
     return MaterialApp(
       navigatorKey: navigatorKey,
