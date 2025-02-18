@@ -34,6 +34,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   int authStatus = 2; // 0 = No auth; 1 = Auth window opened; 2 = Authenticated
+  late DbProvider dbProvider;
   @override
   void initState() {
     super.initState();
@@ -56,6 +57,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       print("App paused");
       if (AppLifecycleState.detached != state && authStatus == 2) {
         authStatus = 0;
+      }
+      if (state == AppLifecycleState.detached) {
+        
       }
     } else if (state == AppLifecycleState.resumed) {
       print("App resumed");
