@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+
 void main() {
   runApp(const AppWithChangeNotifierProvider());
 }
@@ -39,6 +40,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    functionalityProvider = context.read<FunctionalityProvider>();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -60,12 +62,10 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           functionalityProvider.authStatus == 2) {
         functionalityProvider.changeAuthStatus(0);
       }
-      if (state == AppLifecycleState.detached) {
-        functionalityProvider.encryptDatabase(encrypt.Key(Uint8List.fromList([123,],),),); //TODO
-      }
+      functionalityProvider
+          .encryptDatabase(encrypt.Key.fromUtf8("1234567890abcdef")); //TODO
     } else if (state == AppLifecycleState.resumed) {
-        print("App resumed");
-      }
+      print("App resumed");
     }
   }
 

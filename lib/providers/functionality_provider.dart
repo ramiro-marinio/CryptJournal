@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class FunctionalityProvider extends ChangeNotifier {
+  final iv = encrypt.IV.fromBase64("fuckthisshit");
   late Future<bool> _initialized;
   late final String databasePath;
   final databaseName = 'database.db';
@@ -25,14 +26,13 @@ class FunctionalityProvider extends ChangeNotifier {
     databasePath = await getDatabasesPath();
     encryptedDirPath = '$databasePath/encrypted';
     await Directory(encryptedDirPath).create();
-
     authStatus = (await checkDatabaseExists()) ? 1 : 0;
 
     return true;
   }
 
   FunctionalityProvider() {
-    _init();
+    _initialized = _init();
   }
 
   Database? _database;
@@ -64,6 +64,7 @@ class FunctionalityProvider extends ChangeNotifier {
   }
 
   Future<Database?> _initDB() async {
+    await _initialized;
     String path = join(databasePath, databaseName);
     final encryptedDatabaseFilePath =
         '$encryptedDirPath/$encryptedDatabaseName';
@@ -102,14 +103,15 @@ class FunctionalityProvider extends ChangeNotifier {
     );
     final databaseBytes =
         (await File('$databasePath/$databaseName').readAsBytes()).toList();
+    print('this shit done?');
     final encryptedResult =
-        encrypter.encryptBytes(databaseBytes).bytes.toList();
-
+        encrypter.encryptBytes(databaseBytes, iv: iv).bytes.toList();
     await File(
       '$encryptedDirPath/$encryptedDatabaseName',
     ).writeAsBytes(encryptedResult);
+    print('Fuckin done yet?');
     await deleteDatabase('$databasePath/$databaseName');
-
+    print('LOL I ENCRYPTED THE SHIT');
     return true;
   }
 
@@ -119,16 +121,18 @@ class FunctionalityProvider extends ChangeNotifier {
     );
     final bytes = (await encryptedDatabaseFile.readAsBytes());
 
-    final decrypter = encrypt.Encrypter(
+    final encrypter = encrypt.Encrypter(
       encrypt.AES(
         password,
       ),
     );
-    final decrypted_database = decrypter.decryptBytes(
+    final decrypted_database = encrypter.decryptBytes(
       encrypt.Encrypted(bytes),
+      iv: iv,
     );
     await encryptedDatabaseFile.delete();
     await File('$databasePath/$databaseName').writeAsBytes(decrypted_database);
+    print('LOL I DECRYPTED YOUR SHIT NIGGA YOU ARE DONE');
     return true;
   }
 }
