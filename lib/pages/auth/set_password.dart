@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cryptjournal/pages/home_page/home_page.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/standard_button.dart';
 import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 
 class SetPassword extends StatefulWidget {
   const SetPassword({super.key});

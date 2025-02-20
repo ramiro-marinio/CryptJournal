@@ -98,10 +98,10 @@ class FunctionalityProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> encryptDatabase(encrypt.Key password) async {
+  Future<bool> encryptDatabase() async {
     final encrypter = encrypt.Encrypter(
       encrypt.AES(
-        password,
+        encrypt.Key(password!),
       ),
     );
     final databaseBytes =
@@ -115,7 +115,7 @@ class FunctionalityProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> decryptDatabase(encrypt.Key password) async {
+  Future<bool> decryptDatabase() async {
     final encryptedDatabaseFile = File(
       '$encryptedDirPath/$encryptedDatabaseName',
     );
@@ -123,15 +123,15 @@ class FunctionalityProvider extends ChangeNotifier {
 
     final encrypter = encrypt.Encrypter(
       encrypt.AES(
-        password,
+        encrypt.Key(password!),
       ),
     );
-    final decrypted_database = encrypter.decryptBytes(
+    final decryptedDatabase = encrypter.decryptBytes(
       encrypt.Encrypted(bytes),
       iv: iv,
     );
     await encryptedDatabaseFile.delete();
-    await File('$databasePath/$databaseName').writeAsBytes(decrypted_database);
+    await File('$databasePath/$databaseName').writeAsBytes(decryptedDatabase);
     return true;
   }
 }
@@ -160,7 +160,6 @@ class Table {
   Future<bool> create({
     required Map<String, dynamic> object,
   }) async {
-    print(await (await db).insert(tableName, object));
     notifyListeners();
     return true;
   }

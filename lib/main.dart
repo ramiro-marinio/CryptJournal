@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:cryptjournal/pages/auth/decrypt_database.dart';
 import 'package:cryptjournal/pages/auth/set_password.dart';
 import 'package:cryptjournal/pages/home_page/home_page.dart';
@@ -7,7 +5,6 @@ import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 
 void main() {
   runApp(const AppWithChangeNotifierProvider());
@@ -58,16 +55,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       AppLifecycleState.paused,
       AppLifecycleState.detached
     ].contains(state)) {
-      print("App paused");
       if (AppLifecycleState.detached != state &&
           functionalityProvider.authStatus == 2) {
         functionalityProvider.changeAuthStatus(0);
       }
-      functionalityProvider
-          .encryptDatabase(encrypt.Key.fromUtf8("1234567890abcdef")); //TODO
-    } else if (state == AppLifecycleState.resumed) {
-      print("App resumed");
-    }
+      functionalityProvider.encryptDatabase();
+    } else if (state == AppLifecycleState.resumed) {}
   }
 
   @override
@@ -135,7 +128,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           return SetPassword();
         }
         if (functionalityProvider.authStatus == 1) {
-          return SetPassword();
+          return DecryptDatabase();
         }
         return Column(
           children: [
