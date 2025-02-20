@@ -72,8 +72,8 @@ class _SetPasswordState extends State<SetPassword> {
                     final bytes = utf8.encode(password.text);
                     final hash = sha256.convert(bytes).bytes;
                     functionalityProvider.password = Uint8List.fromList(hash);
+                    functionalityProvider.changeAuthStatus(2);
                   }
-                  functionalityProvider.changeAuthStatus(2);
                 },
               ),
             ],

@@ -106,15 +106,12 @@ class FunctionalityProvider extends ChangeNotifier {
     );
     final databaseBytes =
         (await File('$databasePath/$databaseName').readAsBytes()).toList();
-    print('this shit done?');
     final encryptedResult =
         encrypter.encryptBytes(databaseBytes, iv: iv).bytes.toList();
     await File(
       '$encryptedDirPath/$encryptedDatabaseName',
     ).writeAsBytes(encryptedResult);
-    print('Fuckin done yet?');
     await deleteDatabase('$databasePath/$databaseName');
-    print('LOL I ENCRYPTED THE SHIT');
     return true;
   }
 
@@ -135,7 +132,6 @@ class FunctionalityProvider extends ChangeNotifier {
     );
     await encryptedDatabaseFile.delete();
     await File('$databasePath/$databaseName').writeAsBytes(decrypted_database);
-    print('LOL I DECRYPTED YOUR SHIT NIGGA YOU ARE DONE');
     return true;
   }
 }
