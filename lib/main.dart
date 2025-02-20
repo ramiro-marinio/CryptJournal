@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:cryptjournal/pages/auth/insert_password.dart';
+import 'package:cryptjournal/pages/auth/decrypt_database.dart';
+import 'package:cryptjournal/pages/auth/set_password.dart';
 import 'package:cryptjournal/pages/home_page/home_page.dart';
 import 'package:cryptjournal/providers/functionality_provider.dart';
 import 'package:flutter/material.dart';
@@ -122,13 +123,28 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           contentPadding: EdgeInsets.all(8),
         ),
       ),
-      home: Column(
-        children: [
-          Expanded(
-            child: HomePage(),
-          ),
-        ],
-      ),
+      home: Builder(builder: (context) {
+        if (!functionalityProvider.initialized) {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          );
+        }
+        if (functionalityProvider.authStatus == 0) {
+          return SetPassword();
+        }
+        if (functionalityProvider.authStatus == 1) {
+          return SetPassword();
+        }
+        return Column(
+          children: [
+            Expanded(
+              child: HomePage(),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

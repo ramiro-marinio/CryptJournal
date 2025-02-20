@@ -6,8 +6,10 @@ import 'dart:io';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class FunctionalityProvider extends ChangeNotifier {
+  Uint8List? password;
   final iv = encrypt.IV.fromBase64("fuckthisshit");
   late Future<bool> _initialized;
+  bool initialized = false;
   late final String databasePath;
   final databaseName = 'database.db';
   final encryptedDatabaseName = '/database.aes';
@@ -27,7 +29,8 @@ class FunctionalityProvider extends ChangeNotifier {
     encryptedDirPath = '$databasePath/encrypted';
     await Directory(encryptedDirPath).create();
     authStatus = (await checkDatabaseExists()) ? 1 : 0;
-
+    initialized = true;
+    notifyListeners();
     return true;
   }
 

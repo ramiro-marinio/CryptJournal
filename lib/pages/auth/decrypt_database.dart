@@ -3,14 +3,14 @@ import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background
 import 'package:cryptjournal/pages/home_page/widgets/decoration/standard_button.dart';
 import 'package:flutter/material.dart';
 
-class InsertPassword extends StatefulWidget {
-  const InsertPassword({super.key});
+class DecryptDatabase extends StatefulWidget {
+  const DecryptDatabase({super.key});
 
   @override
-  State<InsertPassword> createState() => _InsertPasswordState();
+  State<DecryptDatabase> createState() => _DecryptDatabaseState();
 }
 
-class _InsertPasswordState extends State<InsertPassword> {
+class _DecryptDatabaseState extends State<DecryptDatabase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,11 @@ class _InsertPasswordState extends State<InsertPassword> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                  ),
+                ),
               ),
               StandardButton(
                 child: Text('Decrypt Database'),

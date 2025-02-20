@@ -1,4 +1,4 @@
-import 'package:cryptjournal/pages/auth/insert_password.dart';
+import 'package:cryptjournal/pages/auth/decrypt_database.dart';
 import 'package:cryptjournal/pages/home_page/widgets/decoration/image_background.dart';
 import 'package:cryptjournal/pages/home_page/widgets/diaries/my_diaries.dart';
 import 'package:flutter/material.dart';
